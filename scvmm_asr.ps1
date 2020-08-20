@@ -4,14 +4,15 @@ $Credential = New-Object -TypeName System.Management.Automation.PSCredential -Ar
 Connect-AzAccount -ServicePrincipal -Credential $Credential -Tenant <<tenant ID>>
 $context = Get-AzContext
 $vault = Get-AzRecoveryServicesVault -Name <<'vault name'>>
+$vmmcloud = "<<VMM Cloud Name>>"
 $rg = Get-AzResourceGroup -Name $vault.ResourceGroupName
 $storageAccount = Get-AzStorageAccount -ResourceGroupName $rg.ResourceGroupName
 $saId = Get-AzResource -Name $storageAccount.StorageAccountName -ResourceGroupName $rg.ResourceGroupName
 Set-AzRecoveryServicesAsrVaultContext -Vault $vault
-$fabric = Get-AzRecoveryServicesAsrFabric -FriendlyName <<'ScVMM Server name in ASR'>>
-$protectionContainer = Get-AzRecoveryServicesAsrProtectionContainer -Fabric $fabric
+$fabric = Get-AzRecoveryServicesAsrFabric -FriendlyName <<'SCVMM Server name in ASR Site Recovery Infrastructure'>>
+$protectionContainer = Get-AzRecoveryServicesAsrProtectionContainer -Fabric $fabric -FriendlyName $vmmcloud
 $containerMapping = Get-AzRecoveryServicesAsrProtectionContainerMapping -ProtectionContainer $protectioncontainer 
-$vm = Get-SCVirtualMachine | Where { $_.cloud.name -eq <<'SCVMM Cloud name'>> }
+$vm = Get-SCVirtualMachine | Where { $_.cloud.name -eq $vmmcloud }
 Write-Host "VM "+ $vm.Name
 $vm | ForEach-Object {
     Write-Host "tag for VM "+ $_.Name +" is "+ $_.tag
