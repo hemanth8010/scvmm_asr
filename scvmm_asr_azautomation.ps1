@@ -1,4 +1,4 @@
-#Connection object scvmm, Variable objects such as vaultName, vmmCloudName and vmmServerName are to be created as variables in Azure Automation prior to running this script.
+#Connection object scvmm, Variable objects such as vaultName, vmmCloudName and vmmServerName are to be created in Azure Automation prior to running this script.
 
 $Credential = Get-AutomationPSCredential -Name 'scvmm'
 Connect-AzAccount -ServicePrincipal -Credential $Credential -Tenant ca9ebe88-c751-4d5b-88c8-1471413e3b44
